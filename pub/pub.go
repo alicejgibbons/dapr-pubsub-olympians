@@ -57,29 +57,28 @@ func main() {
 	}
 	defer client.Close()
 
-	// Open olympians jsonFile
-	jsonFile, err := os.Open("olympics.json")
+	// Open and read olympians data
+	jsonFile, err := os.Open("../olympics.json")
 	if err != nil {
 		fmt.Println(err)
 	}
 	fmt.Println("Successfully Opened olympics.json")
 	defer jsonFile.Close()
-
 	byteValue, err := io.ReadAll(jsonFile)
 	if err != nil {
 		fmt.Printf("failed to read json file, error: %v", err)
 		return
 	}
-
 	var olympians Olympians
 	if err := json.Unmarshal(byteValue, &olympians); err != nil {
 		panic(err)
 	}
 
+	// Publish
 	for i := 0; i < len(olympians.Olympians); i++ {
-
 		if olympians.Olympians[i].NOC == "CAN" {
 			fmt.Println("Olympian is from Canada: " + olympians.Olympians[i].Name)
+
 			// If the Olympian is from Canada, publish as an important event
 			if err := client.PublishEvent(ctx, pubsubName, topicName, olympians.Olympians[i], dapr.PublishEventWithMetadata(publishEventMetadata)); err != nil {
 				panic(err)

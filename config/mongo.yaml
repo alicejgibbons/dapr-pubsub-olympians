@@ -1,0 +1,11 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: kvstore
+spec:
+  type: state.mongodb
+  metadata:
+    - name: host
+      value: localhost:27017
+scopes:
+  - olympians-sub

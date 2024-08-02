@@ -98,11 +98,13 @@ func main() {
 	}
 }
 
+// Receive regular events
 func eventHandler(ctx context.Context, e *common.TopicEvent) (retry bool, err error) {
 	log.Printf("Received event - PubsubName: %s, Topic: %s", e.PubsubName, e.Topic)
 	return false, nil
 }
 
+// Receive and persist important events
 func importantEventHandler(ctx context.Context, e *common.TopicEvent) (retry bool, err error) {
 	log.Printf("Received event (important) - PubsubName: %s, Topic: %s", e.PubsubName, e.Topic)
 
